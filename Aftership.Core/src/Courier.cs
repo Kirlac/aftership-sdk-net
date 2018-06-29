@@ -6,20 +6,28 @@ namespace AftershipAPI
 {
     public class Courier
     {
-        /** Unique code of courier */
+        /// <summary>Unique code of courier</summary>
         public string Slug { get; set; }
-        /** Name of courier */
+        /// <summary>Name of courier</summary>
         public string Name { get; set; }
-        /** Contact phone number of courier */
+        /// <summary>Contact phone number of courier</summary>
         public string Phone { get; set; }
-        /** Other name of courier, if several they will be separated by commas */
+        /// <summary>Other name of courier, if several they will be separated by commas</summary>
         public string OtherName { get; set; }
-        /** Website link of courier */
+        /// <summary>Website link of courier</summary>
         public string WebUrl { get; set; }
-        /** Require fields for this courier */
+        /// <summary>Require fields for this courier</summary>
+        
         public List<string> RequireFields { get; set; }
 
-        /** Default constructor with all the fields of the class */
+        /// <summary>
+        /// Default constructor with all the fields of the class
+        /// </summary>
+        /// <param name="web_url"></param>
+        /// <param name="slug"></param>
+        /// <param name="name"></param>
+        /// <param name="phone"></param>
+        /// <param name="other_name"></param>
         public Courier(string web_url, string slug, string name, string phone, string other_name)
         {
             WebUrl = web_url;
@@ -28,15 +36,12 @@ namespace AftershipAPI
             Phone = phone;
             OtherName = other_name;
         }
-
-        /**
-     * Constructor, creates a Courier from a JSONObject with the information of the Courier,
-     * if any field is not specified it will be ""
-     *
-     * @param jsonCourier   A JSONObject with information of the Courier
-     * by the API.
-     **/           // _trackingNumber = trackingJSON["tracking_number"]==null?null:(String)trackingJSON["tracking_number"];
-
+       
+        /// <summary>
+        /// creates a Courier from a JSONObject with the information of the Courier. 
+        /// If any field is not specified it will be ""
+        /// </summary>
+        /// <param name="jsonCourier">A JSONObject with information of the Courier by the API</param>
         public Courier(JObject jsonCourier)
         {
             WebUrl = jsonCourier["web_url"] == null ? null : (string)jsonCourier["web_url"];
@@ -54,7 +59,6 @@ namespace AftershipAPI
                     RequireFields.Add(requireFieldsArray[i].ToString());
                 }
             }
-
         }
 
         public string TooString()
@@ -92,7 +96,6 @@ namespace AftershipAPI
         }
 
         public void DeleteRequireFields() => RequireFields = null;
-
     }
 }
 

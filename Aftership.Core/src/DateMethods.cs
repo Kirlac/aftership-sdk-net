@@ -1,5 +1,6 @@
 ﻿using System;
-// changes to support Russian culture, check this http://stackoverflow.com/questions/2193012/string-was-not-recognized-as-a-valid-datetime-format-dd-mm-yyyy
+// changes to support Russian culture, check this:
+// http://stackoverflow.com/questions/2193012/string-was-not-recognized-as-a-valid-datetime-format-dd-mm-yyyy
 
 namespace AftershipAPI
 {
