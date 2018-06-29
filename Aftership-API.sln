@@ -5,9 +5,7 @@ VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AftershipAPI", "Aftership-API\AftershipAPI.csproj", "{6455C2A9-B5E3-4095-8942-F51590041249}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test", "test\test.csproj", "{49F5BF15-4C47-4316-91EE-E8309BF5FB46}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitTests", "XUnitTests\XUnitTests.csproj", "{0D43CC94-F021-411F-9CF5-E781640E2132}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnitTests", "XUnitTests\XUnitTests.csproj", "{0D43CC94-F021-411F-9CF5-E781640E2132}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +17,6 @@ Global
 		{6455C2A9-B5E3-4095-8942-F51590041249}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6455C2A9-B5E3-4095-8942-F51590041249}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6455C2A9-B5E3-4095-8942-F51590041249}.Release|Any CPU.Build.0 = Release|Any CPU
-		{49F5BF15-4C47-4316-91EE-E8309BF5FB46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{49F5BF15-4C47-4316-91EE-E8309BF5FB46}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{49F5BF15-4C47-4316-91EE-E8309BF5FB46}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{49F5BF15-4C47-4316-91EE-E8309BF5FB46}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0D43CC94-F021-411F-9CF5-E781640E2132}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0D43CC94-F021-411F-9CF5-E781640E2132}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D43CC94-F021-411F-9CF5-E781640E2132}.Release|Any CPU.ActiveCfg = Release|Any CPU
