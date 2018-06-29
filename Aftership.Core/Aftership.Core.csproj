@@ -1,7 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Aftership Team;Kirlac</Authors>
+    <Company>Aftership</Company>
+    <Product>Aftership</Product>
+    <Description>Dotnet Core port of the Aftership API, track your shipments</Description>
+    <Copyright>Copyright 2014</Copyright>
+    <PackageProjectUrl>https://www.aftership.com/</PackageProjectUrl>
+    <PackageIconUrl>https://www.aftership.com/assets/common/img/logo-aftership-premium-bright.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/AfterShip/aftership-sdk-net</RepositoryUrl>
+    <PackageTags>Aftership Track Tracking Courier Couriers</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
