@@ -48,7 +48,7 @@ namespace Test
 
         public TestConnectionAPI()
         {
-            var key = System.IO.File.ReadAllText(@"\\psf\Home\Documents\aftership-key.txt");
+            var key = System.IO.File.ReadAllText(@"C:\dev\misc\aftership-key.txt");
             connection = new ConnectionAPI(key);
 
             if (firstTime)
@@ -209,8 +209,6 @@ namespace Test
             Tracking trackingPosted2 = connection.CreateTracking(tracking2);
             Assert.Equal(_trackingNumberToDetect, trackingPosted2.TrackingNumber);
             Assert.Equal("dpd", trackingPosted2.Slug);//the system assign dpd (it exist)
-
-
         }
 
         //test post tracking number doesn't exist
