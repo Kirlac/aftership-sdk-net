@@ -1,50 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
-using AftershipAPI.Enums;
 
 namespace AftershipAPI
 {
 
-	/// <summary>
-	/// Creates a url friendly String
-	/// </summary>
-	public class QueryString
-	{
-		private String query = "";
+    /// <summary>
+    /// Creates a url friendly String
+    /// </summary>
+    public class QueryString
+    {
+        private string query = "";
 
-		//careful, this constructor creates the first element with &
-		public QueryString(){}
+        public QueryString() { }
 
-		public QueryString(String name, String value) {
-			encode(name, value);
-		}
-			
+        public QueryString(string name, string value)
+        {
+            Encode(name, value);
+        }
 
-		public void add(String name, List<String> list) {
-			query += "&";
+        public void Add(string name, List<string> list)
+        {
+            AppendAmpersandToQuery();
 
-			String value =String.Join(",",list.ToArray());
-			encode(name, value);
-		}
+            var value = string.Join(",", list.ToArray());
+            Encode(name, value);
+        }
 
-		public void add(String name, String value) {
-			query += "&";
-			encode(name, value);
-		}
+        public void Add(string name, string value)
+        {
+            AppendAmpersandToQuery();
+            Encode(name, value);
+        }
 
-		private void encode(String name, String value) {
-            query +=  System.Uri.EscapeDataString(name);
-			query += "=";
-            query +=  System.Uri.EscapeDataString(value);
-		}
+        private void AppendAmpersandToQuery()
+        {
+            // Don't append an '&' char if we don't have any query params yet
+            // eg. when adding the first parameter from the empty ctor
+            if (!string.IsNullOrWhiteSpace(query))
+            { query += "&"; }
+        }
 
-		public String getQuery() {
-			return query;
-		}
+        private void Encode(string name, string value)
+        {
+            query += System.Uri.EscapeDataString(name);
+            query += "=";
+            query += System.Uri.EscapeDataString(value);
+        }
 
-		public override String  ToString() {
-			return getQuery();
-		}
-	}
+        public string GetQuery() => query;
+
+        public override string ToString() => GetQuery();
+    }
 }
 

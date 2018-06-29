@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace AftershipAPI.Enums
+﻿namespace AftershipAPI.Enums
 {
-	public enum StatusTag
-	{
+    public enum StatusTag
+    {
         Pending, InfoReceived, InTransit, OutForDelivery, AttemptFail, Delivered, Exception, Expired
-	}
+    }
 }
 

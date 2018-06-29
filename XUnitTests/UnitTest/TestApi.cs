@@ -59,7 +59,7 @@ namespace Test
                 //delete the tracking we are going to post (in case it exist)
                 var tracking = new Tracking("05167019264110")
                 {
-                    slug = "dpd"
+                    Slug = "dpd"
                 };
 
                 //first courier
@@ -76,16 +76,16 @@ namespace Test
                 firstCourierAccount.Add("other_name", "United States Postal Service");
                 firstCourierAccount.Add("web_url", "https://www.usps.com");
 
-                try { connection.deleteTracking(tracking); }
+                try { connection.DeleteTracking(tracking); }
                 catch (Exception e)
                 {
                     Console.WriteLine("**1" + e.Message);
                 }
                 var tracking1 = new Tracking(_trackingNumberToDetect)
                 {
-                    slug = "dpd"
+                    Slug = "dpd"
                 };
-                try { connection.deleteTracking(tracking1); }
+                try { connection.DeleteTracking(tracking1); }
                 catch (Exception e)
                 {
                     Console.WriteLine("**2" + e.Message);
@@ -94,9 +94,9 @@ namespace Test
                 {
                     var newTracking = new Tracking(_trackingNumberDelete)
                     {
-                        slug = _slugDelete
+                        Slug = _slugDelete
                     };
-                    connection.createTracking(newTracking);
+                    connection.CreateTracking(newTracking);
                 }
                 catch (Exception e)
                 {
@@ -106,9 +106,9 @@ namespace Test
                 {
                     var newTracking1 = new Tracking("9400110897700003231250")
                     {
-                        slug = "usps"
+                        Slug = "usps"
                     };
-                    connection.createTracking(newTracking1);
+                    connection.CreateTracking(newTracking1);
                 }
                 catch (Exception e)
                 {
@@ -126,22 +126,22 @@ namespace Test
         {
 
             //get trackings of this number.
-            List<Courier> couriers = connection.detectCouriers(_trackingNumberToDetect);
+            List<Courier> couriers = connection.DetectCouriers(_trackingNumberToDetect);
             Assert.Equal(3, couriers.Count);
             //the couriers should be dpd or fedex
-            Console.WriteLine("**0" + couriers[0].slug);
-            Console.WriteLine("**1" + couriers[1].slug);
+            Console.WriteLine("**0" + couriers[0].Slug);
+            Console.WriteLine("**1" + couriers[1].Slug);
 
-            Assert.True(Equals(couriers[0].slug, _couriersDetected[0])
-                || Equals(couriers[1].slug, _couriersDetected[0]));
-            Assert.True(Equals(couriers[0].slug, _couriersDetected[1])
-                || Equals(_couriersDetected[1], couriers[1].slug));
+            Assert.True(Equals(couriers[0].Slug, _couriersDetected[0])
+                || Equals(couriers[1].Slug, _couriersDetected[0]));
+            Assert.True(Equals(couriers[0].Slug, _couriersDetected[1])
+                || Equals(_couriersDetected[1], couriers[1].Slug));
 
             //if the trackingNumber doesn't match any courier defined, should give an error.
 
             try
             {
-                List<Courier> couriers1 = connection.detectCouriers(_trackingNumberToDetectError);
+                List<Courier> couriers1 = connection.DetectCouriers(_trackingNumberToDetectError);
                 Assert.Empty(couriers1);
             }
             catch (Exception e)
@@ -157,7 +157,7 @@ namespace Test
                 // "asdfasdfasdfasd",
                 "dpd"
             };
-            List<Courier> couriers2 = connection.detectCouriers(_trackingNumberToDetect, "28046", "", null, slugs);
+            List<Courier> couriers2 = connection.DetectCouriers(_trackingNumberToDetect, "28046", "", null, slugs);
             Assert.Single(couriers2);
         }
         [Fact]
@@ -165,40 +165,40 @@ namespace Test
         {
             var tracking1 = new Tracking(_trackingNumberPost)
             {
-                slug = _slugPost,
-                orderIDPath = _orderIDPathPost,
-                customerName = _customerNamePost,
-                orderID = _orderIDPost,
-                title = _titlePost,
-                destinationCountryISO3 = _countryDestinationPost
+                Slug = _slugPost,
+                OrderIDPath = _orderIDPathPost,
+                CustomerName = _customerNamePost,
+                OrderID = _orderIDPost,
+                Title = _titlePost,
+                DestinationCountryISO3 = _countryDestinationPost
             };
-            tracking1.addEmails(_email1Post);
-            tracking1.addEmails(_email2Post);
-            tracking1.addCustomFields("product_name", _customProductNamePost);
-            tracking1.addCustomFields("product_price", _customProductPricePost);
-            tracking1.addSmses(_sms1Post);
-            tracking1.addSmses(_sms2Post);
-            Tracking trackingPosted = connection.createTracking(tracking1);
+            tracking1.AddEmails(_email1Post);
+            tracking1.AddEmails(_email2Post);
+            tracking1.AddCustomFields("product_name", _customProductNamePost);
+            tracking1.AddCustomFields("product_price", _customProductPricePost);
+            tracking1.AddSmses(_sms1Post);
+            tracking1.AddSmses(_sms2Post);
+            Tracking trackingPosted = connection.CreateTracking(tracking1);
 
-            Assert.Equal(_trackingNumberPost, trackingPosted.trackingNumber);
-            Assert.Equal(_slugPost, trackingPosted.slug);
-            Assert.Equal(_orderIDPathPost, trackingPosted.orderIDPath);
-            Assert.Equal(_orderIDPost, trackingPosted.orderID);
+            Assert.Equal(_trackingNumberPost, trackingPosted.TrackingNumber);
+            Assert.Equal(_slugPost, trackingPosted.Slug);
+            Assert.Equal(_orderIDPathPost, trackingPosted.OrderIDPath);
+            Assert.Equal(_orderIDPost, trackingPosted.OrderID);
             Assert.Equal(_countryDestinationPost,
-                trackingPosted.destinationCountryISO3);
+                trackingPosted.DestinationCountryISO3);
 
-            Assert.Contains(_email1Post, trackingPosted.emails);
-            Assert.Contains(_email2Post, trackingPosted.emails);
-            Assert.Equal(2, trackingPosted.emails.Count);
+            Assert.Contains(_email1Post, trackingPosted.Emails);
+            Assert.Contains(_email2Post, trackingPosted.Emails);
+            Assert.Equal(2, trackingPosted.Emails.Count);
 
-            Assert.Contains(_sms1Post, trackingPosted.smses);
-            Assert.Contains(_sms2Post, trackingPosted.smses);
-            Assert.Equal(2, trackingPosted.smses.Count);
+            Assert.Contains(_sms1Post, trackingPosted.Smses);
+            Assert.Contains(_sms2Post, trackingPosted.Smses);
+            Assert.Equal(2, trackingPosted.Smses.Count);
 
             Assert.Equal(_customProductNamePost,
-                trackingPosted.customFields["product_name"]);
+                trackingPosted.CustomFields["product_name"]);
             Assert.Equal(_customProductPricePost,
-                trackingPosted.customFields["product_price"]);
+                trackingPosted.CustomFields["product_price"]);
         }
 
         [Fact]
@@ -206,9 +206,9 @@ namespace Test
         {
             //test post only informing trackingNumber (the slug can be dpd and fedex)
             var tracking2 = new Tracking(_trackingNumberToDetect);
-            Tracking trackingPosted2 = connection.createTracking(tracking2);
-            Assert.Equal(_trackingNumberToDetect, trackingPosted2.trackingNumber);
-            Assert.Equal("dpd", trackingPosted2.slug);//the system assign dpd (it exist)
+            Tracking trackingPosted2 = connection.CreateTracking(tracking2);
+            Assert.Equal(_trackingNumberToDetect, trackingPosted2.TrackingNumber);
+            Assert.Equal("dpd", trackingPosted2.Slug);//the system assign dpd (it exist)
 
 
         }
@@ -221,7 +221,7 @@ namespace Test
 
             try
             {
-                connection.createTracking(tracking3);
+                connection.CreateTracking(tracking3);
                 //always should give an exception before this
                 Assert.True(false);
             }
@@ -241,9 +241,9 @@ namespace Test
             //delete a tracking number (posted in the setup)
             var deleteTracking = new Tracking(_trackingNumberDelete)
             {
-                slug = _slugDelete
+                Slug = _slugDelete
             };
-            Assert.True(connection.deleteTracking(deleteTracking));
+            Assert.True(connection.DeleteTracking(deleteTracking));
 
         }
 
@@ -254,7 +254,7 @@ namespace Test
             try
             {
                 var deleteTracking2 = new Tracking(_trackingNumberDelete2);
-                Assert.True(connection.deleteTracking(deleteTracking2));
+                Assert.True(connection.DeleteTracking(deleteTracking2));
                 //always should give an exception before this
                 Assert.True(false);
             }
@@ -275,9 +275,9 @@ namespace Test
             {
                 var deleteTracking3 = new Tracking("adfa")
                 {
-                    slug = "fedex"
+                    Slug = "fedex"
                 };
-                Assert.True(connection.deleteTracking(deleteTracking3));
+                Assert.True(connection.DeleteTracking(deleteTracking3));
                 //always should give an exception before this
                 Assert.True(false);
             }
@@ -296,21 +296,21 @@ namespace Test
 
             var trackingGet1 = new Tracking(trackingNumber)
             {
-                slug = slug
+                Slug = slug
             };
 
-            Tracking tracking = connection.getTrackingByNumber(trackingGet1);
-            Assert.Equal(trackingNumber, tracking.trackingNumber);
-            Assert.Equal(slug, tracking.slug);
-            Assert.Null(tracking.shipmentType);
+            Tracking tracking = connection.GetTrackingByNumber(trackingGet1);
+            Assert.Equal(trackingNumber, tracking.TrackingNumber);
+            Assert.Equal(slug, tracking.Slug);
+            Assert.Null(tracking.ShipmentType);
 
-            List<Checkpoint> checkpoints = tracking.checkpoints;
+            List<Checkpoint> checkpoints = tracking.Checkpoints;
             Checkpoint lastCheckpoint = checkpoints[checkpoints.Count - 1];
             Assert.NotNull(checkpoints);
             Assert.True(checkpoints.Count > 1);
 
-            Assert.False(string.IsNullOrEmpty(lastCheckpoint.message));
-            Assert.False(string.IsNullOrEmpty(lastCheckpoint.countryName));
+            Assert.False(string.IsNullOrEmpty(lastCheckpoint.Message));
+            Assert.False(string.IsNullOrEmpty(lastCheckpoint.CountryName));
 
         }
 
@@ -323,7 +323,7 @@ namespace Test
             {
                 var trackingGet2 = new Tracking("RC328021065CN");
 
-                connection.getTrackingByNumber(trackingGet2);
+                connection.GetTrackingByNumber(trackingGet2);
                 //always should give an exception before this
                 Assert.True(false);
             }
@@ -344,9 +344,9 @@ namespace Test
             {
                 var trackingGet3 = new Tracking("adf")
                 {
-                    slug = "fedex"
+                    Slug = "fedex"
                 };
-                connection.getTrackingByNumber(trackingGet3);
+                connection.GetTrackingByNumber(trackingGet3);
                 //always should give an exception before this
                 Assert.True(false);
             }
@@ -363,12 +363,12 @@ namespace Test
         {
             var trackingGet1 = new Tracking("whatever")
             {
-                id = "5550529d74346ecd5099ab47"
+                Id = "5550529d74346ecd5099ab47"
             };
-            Checkpoint newCheckpoint = connection.getLastCheckpoint(trackingGet1);
-            Assert.False(string.IsNullOrEmpty(newCheckpoint.message));
-            Assert.Null(newCheckpoint.countryName);
-            Assert.Equal("Delivered", newCheckpoint.tag);
+            Checkpoint newCheckpoint = connection.GetLastCheckpoint(trackingGet1);
+            Assert.False(string.IsNullOrEmpty(newCheckpoint.Message));
+            Assert.Null(newCheckpoint.CountryName);
+            Assert.Equal("Delivered", newCheckpoint.Tag);
         }
 
         [Fact]
@@ -380,18 +380,18 @@ namespace Test
             };
             var trackingGet1 = new Tracking("whatever")
             {
-                id = "555035fe74346ecd50998680"
+                Id = "555035fe74346ecd50998680"
             };
 
-            Checkpoint newCheckpoint1 = connection.getLastCheckpoint(trackingGet1, fields, "");
-            Assert.False(string.IsNullOrEmpty(newCheckpoint1.message));
-            Assert.Equal("0001-01-01T00:00:00+08:00", DateMethods.ToString(newCheckpoint1.createdAt));
+            Checkpoint newCheckpoint1 = connection.GetLastCheckpoint(trackingGet1, fields, "");
+            Assert.False(string.IsNullOrEmpty(newCheckpoint1.Message));
+            Assert.Equal("0001-01-01T00:00:00+08:00", DateMethods.ToString(newCheckpoint1.CreatedAt));
 
             fields.Add(FieldCheckpoint.created_at);
-            Checkpoint newCheckpoint2 = connection.getLastCheckpoint(trackingGet1, fields, "");
-            Assert.False(string.IsNullOrEmpty(newCheckpoint2.message));
-            Assert.NotEqual("0001-01-01T00:00:00+00:00", DateMethods.ToString(newCheckpoint2.createdAt));
-            Assert.False(string.IsNullOrEmpty(DateMethods.ToString(newCheckpoint2.createdAt)));
+            Checkpoint newCheckpoint2 = connection.GetLastCheckpoint(trackingGet1, fields, "");
+            Assert.False(string.IsNullOrEmpty(newCheckpoint2.Message));
+            Assert.NotEqual("0001-01-01T00:00:00+00:00", DateMethods.ToString(newCheckpoint2.CreatedAt));
+            Assert.False(string.IsNullOrEmpty(DateMethods.ToString(newCheckpoint2.CreatedAt)));
 
         }
 
@@ -404,12 +404,12 @@ namespace Test
             };
             var trackingGet1 = new Tracking("whatever")
             {
-                id = "5550361716f0d77344cb80ad"
+                Id = "5550361716f0d77344cb80ad"
             };
 
 
-            Checkpoint newCheckpoint1 = connection.getLastCheckpoint(trackingGet1, fields, "");
-            Assert.False(string.IsNullOrEmpty(newCheckpoint1.message));
+            Checkpoint newCheckpoint1 = connection.GetLastCheckpoint(trackingGet1, fields, "");
+            Assert.False(string.IsNullOrEmpty(newCheckpoint1.Message));
 
         }
 
@@ -419,7 +419,7 @@ namespace Test
 
 
             //get the first 100 Trackings
-            List<Tracking> listTrackings100 = connection.getTrackings(1);
+            List<Tracking> listTrackings100 = connection.GetTrackings(1);
             // Assert.AreEqual(10, listTrackings100.Count);
             //at least we have 10 elements
             Assert.NotNull(listTrackings100[0].ToString());
@@ -431,22 +431,22 @@ namespace Test
         {
             var tracking = new Tracking("00340433836621378669")
             {
-                slug = "dhl-germany",
-                title = "another title"
+                Slug = "dhl-germany",
+                Title = "another title"
             };
 
-            Tracking tracking2 = connection.putTracking(tracking);
-            Assert.Equal("another title", tracking2.title);
+            Tracking tracking2 = connection.PutTracking(tracking);
+            Assert.Equal("another title", tracking2.Title);
 
             //test post tracking number doesn't exist
             var tracking3 = new Tracking(_trackingNumberToDetectError)
             {
-                title = "another title"
+                Title = "another title"
             };
 
             try
             {
-                connection.putTracking(tracking3);
+                connection.PutTracking(tracking3);
                 //always should give an exception before this
                 Assert.True(false);
             }
@@ -460,14 +460,14 @@ namespace Test
         public void TestGetAllCouriers()
         {
 
-            List<Courier> couriers = connection.getAllCouriers();
+            List<Courier> couriers = connection.GetAllCouriers();
 
             //check first courier
-            Assert.False(string.IsNullOrEmpty(couriers[0].slug));
-            Assert.False(string.IsNullOrEmpty(couriers[0].name));
-            Assert.False(string.IsNullOrEmpty(couriers[0].phone));
-            Assert.False(string.IsNullOrEmpty(couriers[0].other_name));
-            Assert.False(string.IsNullOrEmpty(couriers[0].web_url));
+            Assert.False(string.IsNullOrEmpty(couriers[0].Slug));
+            Assert.False(string.IsNullOrEmpty(couriers[0].Name));
+            Assert.False(string.IsNullOrEmpty(couriers[0].Phone));
+            Assert.False(string.IsNullOrEmpty(couriers[0].OtherName));
+            Assert.False(string.IsNullOrEmpty(couriers[0].WebUrl));
 
             //total Couriers returned
             Assert.True(couriers.Count > 200);
@@ -476,7 +476,7 @@ namespace Test
 
             try
             {
-                connectionBadKey.getCouriers();
+                connectionBadKey.GetCouriers();
             }
             catch (Exception e)
             {
@@ -488,23 +488,23 @@ namespace Test
         public void TestGetCouriers()
         {
 
-            List<Courier> couriers = connection.getCouriers();
+            List<Courier> couriers = connection.GetCouriers();
             //total Couriers returned
             Assert.True(couriers.Count > 30);
             //check first courier
 
-            Assert.False(string.IsNullOrEmpty(couriers[0].slug));
-            Assert.False(string.IsNullOrEmpty(couriers[0].name));
-            Assert.False(string.IsNullOrEmpty(couriers[0].phone));
-            Assert.False(string.IsNullOrEmpty(couriers[0].other_name));
-            Assert.False(string.IsNullOrEmpty(couriers[0].web_url));
+            Assert.False(string.IsNullOrEmpty(couriers[0].Slug));
+            Assert.False(string.IsNullOrEmpty(couriers[0].Name));
+            Assert.False(string.IsNullOrEmpty(couriers[0].Phone));
+            Assert.False(string.IsNullOrEmpty(couriers[0].OtherName));
+            Assert.False(string.IsNullOrEmpty(couriers[0].WebUrl));
 
             //try to acces with a bad API Key
             var connectionBadKey = new ConnectionAPI("badKey");
 
             try
             {
-                connectionBadKey.getCouriers();
+                connectionBadKey.GetCouriers();
             }
             catch (Exception e)
             {
@@ -518,14 +518,14 @@ namespace Test
         {
 
             var parameters = new ParametersTracking();
-            parameters.addSlug("dhl");
+            parameters.AddSlug("dhl");
             DateTime date = DateTime.Today.AddMonths(-1);
 
 
-            parameters.createdAtMin = date;
-            parameters.limit = 50;
+            parameters.CreatedAtMin = date;
+            parameters.Limit = 50;
 
-            List<Tracking> totalDHL = connection.getTrackings(parameters);
+            List<Tracking> totalDHL = connection.GetTrackings(parameters);
             Assert.True(totalDHL.Count >= 1);
         }
 
@@ -534,9 +534,9 @@ namespace Test
         {
 
             var param1 = new ParametersTracking();
-            param1.addDestination(ISO3Country.DEU);
-            param1.limit = 20;
-            List<Tracking> totalSpain = connection.getTrackings(param1);
+            param1.AddDestination(ISO3Country.DEU);
+            param1.Limit = 20;
+            List<Tracking> totalSpain = connection.GetTrackings(param1);
             Assert.True(totalSpain.Count >= 1);
         }
 
@@ -544,10 +544,10 @@ namespace Test
         public void TestGetTrackings_C()
         {
             var param2 = new ParametersTracking();
-            param2.addTag(StatusTag.Delivered);
-            param2.limit = 50;
+            param2.AddTag(StatusTag.Delivered);
+            param2.Limit = 50;
 
-            List<Tracking> totalOutDelivery = connection.getTrackings(param2);
+            List<Tracking> totalOutDelivery = connection.GetTrackings(param2);
             Assert.True(totalOutDelivery.Count > 10);
             Assert.True(totalOutDelivery.Count <= 50);
 
@@ -558,9 +558,9 @@ namespace Test
         {
             var param3 = new ParametersTracking
             {
-                limit = 50
+                Limit = 50
             };
-            List<Tracking> totalOutDelivery1 = connection.getTrackings(param3);
+            List<Tracking> totalOutDelivery1 = connection.GetTrackings(param3);
             Assert.True(totalOutDelivery1.Count > 10);
             Assert.True(totalOutDelivery1.Count <= 50);
         }
@@ -571,14 +571,14 @@ namespace Test
 
             var param4 = new ParametersTracking
             {
-                keyword = "title"
+                Keyword = "title"
             };
-            param4.addField(FieldTracking.title);
-            param4.limit = 50;
+            param4.AddField(FieldTracking.title);
+            param4.Limit = 50;
 
-            List<Tracking> totalOutDelivery2 = connection.getTrackings(param4);
+            List<Tracking> totalOutDelivery2 = connection.GetTrackings(param4);
             //  Assert.AreEqual( 2, totalOutDelivery2.Count);
-            Assert.Equal("this title", totalOutDelivery2[0].title);
+            Assert.Equal("this title", totalOutDelivery2[0].Title);
         }
 
         [Fact]
@@ -586,37 +586,37 @@ namespace Test
         {
 
             var param5 = new ParametersTracking();
-            param5.addField(FieldTracking.tracking_number);
+            param5.AddField(FieldTracking.tracking_number);
             //param5.setLimit(50);
 
-            List<Tracking> totalOutDelivery3 = connection.getTrackings(param5);
-            Assert.Null(totalOutDelivery3[0].title);
+            List<Tracking> totalOutDelivery3 = connection.GetTrackings(param5);
+            Assert.Null(totalOutDelivery3[0].Title);
         }
         [Fact]
         public void TestGetTrackings_G()
         {
 
             var param6 = new ParametersTracking();
-            param6.addField(FieldTracking.tracking_number);
-            param6.addField(FieldTracking.title);
-            param6.addField(FieldTracking.checkpoints);
-            param6.addField(FieldTracking.order_id);
-            param6.addField(FieldTracking.tag);
-            param6.addField(FieldTracking.order_id);
+            param6.AddField(FieldTracking.tracking_number);
+            param6.AddField(FieldTracking.title);
+            param6.AddField(FieldTracking.checkpoints);
+            param6.AddField(FieldTracking.order_id);
+            param6.AddField(FieldTracking.tag);
+            param6.AddField(FieldTracking.order_id);
             //param6.setLimit(50);
 
-            List<Tracking> totalOutDelivery4 = connection.getTrackings(param6);
-            Assert.Null(totalOutDelivery4[0].slug);
+            List<Tracking> totalOutDelivery4 = connection.GetTrackings(param6);
+            Assert.Null(totalOutDelivery4[0].Slug);
         }
         [Fact]
         public void TestGetTrackings_H()
         {
 
             var param7 = new ParametersTracking();
-            param7.addOrigin(ISO3Country.ESP);
+            param7.AddOrigin(ISO3Country.ESP);
             // param7.setLimit(50);
 
-            List<Tracking> totalOutDelivery5 = connection.getTrackings(param7);
+            List<Tracking> totalOutDelivery5 = connection.GetTrackings(param7);
             Assert.Single(totalOutDelivery5);
         }
 
@@ -626,11 +626,11 @@ namespace Test
 
             var tracking = new Tracking("00340433836621378669")
             {
-                slug = "dhl-germany"
+                Slug = "dhl-germany"
             };
             try
             {
-                connection.retrack(tracking);
+                connection.Retrack(tracking);
                 Assert.True(false);
 
             }

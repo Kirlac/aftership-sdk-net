@@ -1,444 +1,544 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+
 using AftershipAPI.Enums;
-using System.Runtime.Serialization;
-using Newtonsoft.Json;
+
 using Newtonsoft.Json.Linq;
-using System.Globalization;
 
 
 namespace AftershipAPI
 {
 
-	/// <summary>
-	/// Tracking. Keep instances of trackings
-	/// </summary>
-	public class Tracking
-	{
-		///Tracking ID in the Afthership system 
-		private String _id;
+    /// <summary>
+    /// Tracking. Keep instances of trackings
+    /// </summary>
+    public class Tracking
+    {
+        /// <summary>Tracking ID in the Afthership system</summary>
 
-		///Tracking number of a shipment. Duplicate tracking numbers, or tracking number with invalid tracking
-		///number format will not be accepted. 
-		private String _trackingNumber;
+        /// <summary>
+        /// Tracking number of a shipment. 
+        /// Duplicate tracking numbers, or tracking number with invalid tracking number format will not be accepted.
+        /// </summary>
 
-		///Unique code of each courier. If you do not specify a slug, Aftership will automatically detect
-		///the courier based on the tracking number format and your selected couriers
-		private String _slug;
+        /// <summary>
+        /// Unique code of each courier. If you do not specify a slug, Aftership will automatically detect
+        /// the courier based on the tracking number format and your selected couriers
+        /// </summary>
 
-		/// Email address(es) to receive email notifications. Use comma for multiple emails. 
-		private List<String> _emails;
+        /// <summary>Email address(es) to receive email notifications. Use comma for multiple emails</summary>
 
-		/// Phone number(s) to receive sms notifications. Use comma for multiple emails.
-		///Enter + area code before phone number. 
-		private List<String> _smses;
+        /// <summary>
+        /// Phone number(s) to receive sms notifications. Use comma for multiple emails.
+        /// Enter + area code before phone number
+        /// </summary>
 
-		/// Title of the tracking. Default value as trackingNumber 
-		private String _title;
+        /// <summary>Title of the tracking. Default value as trackingNumber</summary>
 
-		/// Customer name of the tracking. 
-		private String _customerName;
+        /// <summary>Customer name of the tracking</summary>
 
-		/// ISO Alpha-3(three letters)to specify the destination of the shipment.
-		/// If you use postal service to send international shipments, AfterShip will automatically
-		/// get tracking results at destination courier as well (e.g. USPS for USA). 
-		private ISO3Country _destinationCountryISO3;
+        /// <summary>
+        /// ISO Alpha-3(three letters)to specify the destination of the shipment.
+        /// If you use postal service to send international shipments, AfterShip will automatically
+        /// get tracking results at destination courier as well (e.g. USPS for USA)
+        /// </summary>
 
-		///  Origin country of the tracking. ISO Alpha-3 
-		private ISO3Country _originCountryISO3;
+        /// <summary>Origin country of the tracking. ISO Alpha-3</summary>
 
-		/// Text field for order ID 
-		private String _orderID;
+        /// <summary>Text field for order ID</summary>
 
-		/// Text field for order path 
-		private String _orderIDPath;
+        /// <summary>Text field for order path</summary>
 
-		/// Custom fields that accept any TEXT STRING
-		private Dictionary<String, String> _customFields;
+        /// <summary>Custom fields that accept any TEXT STRING</summary>
+        public int i = 0;
 
-		/// fields informed by Aftership API
+        private string _id;
+        public string Id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+        private string _trackingNumber;
+        public string TrackingNumber
+        {
+            get { return _trackingNumber; }
+            set { _trackingNumber = value; }
+        }
+        private string _slug;
+        public string Slug
+        {
+            get { return _slug; }
+            set { _slug = value; }
+        }
+        private List<string> _emails;
+        public List<string> Emails
+        {
+            get { return _emails; }
+            set { _emails = value; }
+        }
+        private List<string> _smses;
+        public List<string> Smses
+        {
+            get { return _smses; }
+            set { _smses = value; }
+        }
+        private string _title;
+        public string Title
+        {
+            get { return _title; }
+            set { _title = value; }
+        }
+        private string _customerName;
+        public string CustomerName
+        {
+            get { return _customerName; }
+            set { _customerName = value; }
+        }
+        private ISO3Country _destinationCountryISO3;
+        public ISO3Country DestinationCountryISO3
+        {
+            get { return _destinationCountryISO3; }
+            set { _destinationCountryISO3 = value; }
+        }
+        private ISO3Country _originCountryISO3;
+        public ISO3Country OriginCountryISO3
+        {
+            get { return _originCountryISO3; }
+            set { _originCountryISO3 = value; }
+        }
+        private string _orderID;
+        public string OrderID
+        {
+            get { return _orderID; }
+            set { _orderID = value; }
+        }
+        private string _orderIDPath;
+        public string OrderIDPath
+        {
+            get { return _orderIDPath; }
+            set { _orderIDPath = value; }
+        }
+        private Dictionary<string, string> _customFields;
+        public Dictionary<string, string> CustomFields
+        {
+            get { return _customFields; }
+            set { _customFields = value; }
+        }
 
-		///  Date and time of the tracking created. 
-		private DateTime _createdAt;
+        // fields informed by Aftership API
+        /// <summary>Date and time of the tracking created</summary>
 
-		/// Date and time of the tracking last updated. 
-		private DateTime _updatedAt;
+        /// <summary>Date and time of the tracking last updated</summary>
 
-		/// Whether or not AfterShip will continue tracking the shipments.
-		///Value is `false` when status is `Delivered` or `Expired`. 
-		private bool _active;
+        /// <summary> 
+        /// Whether or not AfterShip will continue tracking the shipments.
+        /// Value is `false` when status is `Delivered` or `Expired`
+        /// </summary>
 
-		/// Expected delivery date (if any). 
-		private String _expectedDelivery;
+        /// <summary>Expected delivery date (if any)</summary>
 
-		///  Number	Number of packages under the tracking. 
-		private int _shipmentPackageCount;
+        /// <summary>Number of packages under the tracking</summary>
 
-		/// Shipment type provided by carrier (if any). 
-		private String _shipmentType;
+        /// <summary>Shipment type provided by carrier (if any)</summary>
 
-		/// Signed by information for delivered shipment (if any). 
-		private String _signedBy;
+        /// <summary>Signed by information for delivered shipment (if any)</summary>
 
-		///  Source of how this tracking is added.  
-		private String _source;
+        /// <summary>Source of how this tracking is added</summary>
 
-		/// Current status of tracking. 
-		private StatusTag _tag;
+        /// <summary>Current status of tracking</summary>
 
-		///  Number of attempts AfterShip tracks at courier's system. 
-		private int _trackedCount;
+        /// <summary>Number of attempts AfterShip tracks at courier's system</summary>
 
-		/// Array of Hash describes the checkpoint information. 
-		List<Checkpoint> _checkpoints;
+        /// <summary>Array of Hash describes the checkpoint information</summary>
 
-		///Unique Token
-		private String _uniqueToken;
+        /// <summary>Unique Token</summary>
 
-		///Tracking Account number tracking_account_number
-		private String _trackingAccountNumber;
+        /// <summary>Tracking Account number tracking_account_number</summary>
 
-		///Tracking postal code tracking_postal_code
-		private String _trackingPostalCode;
+        /// <summary>Tracking postal code tracking_postal_code</summary>
 
-		///Tracking ship date tracking_ship_date
-		private String _trackingShipDate;
+        /// <summary>Tracking ship date tracking_ship_date</summary>
+        public int apifields = 0;
 
+        private DateTime _createdAt;
+        public DateTime CreatedAt
+        {
+            get { return _createdAt; }
+            set { _createdAt = value; }
+        }
+        private DateTime _updatedAt;
+        public DateTime UpdatedAt
+        {
+            get { return _updatedAt; }
+            set { _updatedAt = value; }
+        }
+        private bool _active;
+        public bool Active
+        {
+            get { return _active; }
+            set { _active = value; }
+        }
+        private string _expectedDelivery;
+        public string ExpectedDelivery
+        {
+            get { return _expectedDelivery; }
+            set { _expectedDelivery = value; }
+        }
+        private int _shipmentPackageCount;
+        public int ShipmentPackageCount
+        {
+            get { return _shipmentPackageCount; }
+            set { _shipmentPackageCount = value; }
+        }
+        private string _shipmentType;
+        public string ShipmentType
+        {
+            get { return _shipmentType; }
+            set { _shipmentType = value; }
+        }
+        private string _signedBy;
+        public string SignedBy
+        {
+            get { return _signedBy; }
+            set { _signedBy = value; }
+        }
+        private string _source;
+        public string Source
+        {
+            get { return _source; }
+            set { _source = value; }
+        }
+        private StatusTag _tag;
+        public StatusTag Tag
+        {
+            get { return _tag; }
+            set { _tag = value; }
+        }
+        private int _trackedCount;
+        public int TrackedCount
+        {
+            get { return _trackedCount; }
+            set { _trackedCount = value; }
+        }
+        private List<Checkpoint> _checkpoints;
+        public List<Checkpoint> Checkpoints
+        {
+            get { return _checkpoints; }
+            set { _checkpoints = value; }
+        }
+        private string _uniqueToken;
+        public string UniqueToken
+        {
+            get { return _uniqueToken; }
+            set { _uniqueToken = value; }
+        }
+        private string _trackingAccountNumber;
+        public string TrackingAccountNumber
+        {
+            get { return _trackingAccountNumber; }
+            set { _trackingAccountNumber = value; }
+        }
+        private string _trackingPostalCode;
+        public string TrackingPostalCode
+        {
+            get { return _trackingPostalCode; }
+            set { _trackingPostalCode = value; }
+        }
+        private string _trackingShipDate;
+        public string TrackingShipDate
+        {
+            get { return _trackingShipDate; }
+            set { _trackingShipDate = value; }
+        }
+        
+        public Tracking(string trackingNumber)
+        {
+            _trackingNumber = trackingNumber;
+            _title = trackingNumber;
+        }
 
-		public Tracking(String trackingNumber) {
-			_trackingNumber = trackingNumber;
-			_title = trackingNumber;
-		}
+        public Tracking(JObject trackingJSON)
+        {
+            string destination_country_iso3;
+            string origin_country_iso3;
 
-		public Tracking(JObject trackingJSON){
-            String destination_country_iso3;
-            String origin_country_iso3;
+            Id = trackingJSON["id"] == null ? null : (string)trackingJSON["id"];
 
-            this.id = trackingJSON["id"]==null?null:(String)trackingJSON["id"];
+            //fields that can be updated by the user
+            _trackingNumber = trackingJSON["tracking_number"] == null ? null : (string)trackingJSON["tracking_number"];
+            _slug = trackingJSON["slug"] == null ? null : (string)trackingJSON["slug"];
+            _title = trackingJSON["title"] == null ? null : (string)trackingJSON["title"];
+            _customerName = trackingJSON["customer_name"] == null ? null : (string)trackingJSON["customer_name"];
+            destination_country_iso3 = (string)trackingJSON["destination_country_iso3"];
 
-			//fields that can be updated by the user
-			_trackingNumber = trackingJSON["tracking_number"]==null?null:(String)trackingJSON["tracking_number"];
-			_slug= trackingJSON["slug"]==null?null:(String)trackingJSON["slug"];
-			_title = trackingJSON["title"]==null?null:(String)trackingJSON["title"];
-			_customerName = trackingJSON["customer_name"]==null?null:(String)trackingJSON["customer_name"];
-            destination_country_iso3 = (String)trackingJSON["destination_country_iso3"];
-
-            if (destination_country_iso3 != null && destination_country_iso3 != String.Empty)
+            if (destination_country_iso3 != null && destination_country_iso3 != string.Empty)
             {
                 _destinationCountryISO3 = (ISO3Country)Enum.Parse(typeof(ISO3Country), destination_country_iso3);
             }
-			_orderID = trackingJSON["order_id"]==null?null:(String)trackingJSON["order_id"];
-			_orderIDPath = trackingJSON["order_id_path"]==null?null:(String)trackingJSON["order_id_path"];
-			_trackingAccountNumber = trackingJSON["tracking_account_number"]==null?null:
-				(String)trackingJSON["tracking_account_number"];
-			_trackingPostalCode = trackingJSON["tracking_postal_code"]==null?null:
-				(String)trackingJSON["tracking_postal_code"];
-			_trackingShipDate = trackingJSON["tracking_ship_date"]==null?null:
-				(String)trackingJSON["tracking_ship_date"];
+            _orderID = trackingJSON["order_id"] == null ? null : (string)trackingJSON["order_id"];
+            _orderIDPath = trackingJSON["order_id_path"] == null ? null : (string)trackingJSON["order_id_path"];
+            _trackingAccountNumber = trackingJSON["tracking_account_number"] == null ? null :
+                (string)trackingJSON["tracking_account_number"];
+            _trackingPostalCode = trackingJSON["tracking_postal_code"] == null ? null :
+                (string)trackingJSON["tracking_postal_code"];
+            _trackingShipDate = trackingJSON["tracking_ship_date"] == null ? null :
+                (string)trackingJSON["tracking_ship_date"];
 
-			JArray smsesArray =trackingJSON["smses"]==null?null:(JArray)trackingJSON["smses"];
-			if(smsesArray !=null && smsesArray.Count!=0){
-				_smses = new List<String>();
-				for (int i=0;i<smsesArray.Count;i++){
-					_smses.Add((String)smsesArray[i]);
-				}
-			}
+            JArray smsesArray = trackingJSON["smses"] == null ? null : (JArray)trackingJSON["smses"];
+            if (smsesArray != null && smsesArray.Count != 0)
+            {
+                _smses = new List<string>();
+                for (var i = 0; i < smsesArray.Count; i++)
+                {
+                    _smses.Add((string)smsesArray[i]);
+                }
+            }
 
-			JArray emailsArray = trackingJSON["emails"]==null?null: (JArray)trackingJSON["emails"];
-			if(emailsArray!=null && emailsArray.Count!=0){
-				_emails = new List<String>();
-				for (int i=0;i<emailsArray.Count;i++){
-					_emails.Add((String)emailsArray[i]);
-				}
-			}
-              
-            JObject customFieldsJSON = trackingJSON["custom_fields"]==null || !trackingJSON["custom_fields"].HasValues ?null:
+            JArray emailsArray = trackingJSON["emails"] == null ? null : (JArray)trackingJSON["emails"];
+            if (emailsArray != null && emailsArray.Count != 0)
+            {
+                _emails = new List<string>();
+                for (var i = 0; i < emailsArray.Count; i++)
+                {
+                    _emails.Add((string)emailsArray[i]);
+                }
+            }
+
+            JObject customFieldsJSON = trackingJSON["custom_fields"] == null || !trackingJSON["custom_fields"].HasValues ? null :
                 (JObject)trackingJSON["custom_fields"];
 
-			if(customFieldsJSON!=null){
-				_customFields = new Dictionary<String, String>();
-				IEnumerable<JProperty> keys =	customFieldsJSON.Properties();
-				foreach (var item in keys) {
-					_customFields.Add (item.Name ,(String)customFieldsJSON[item.Name]);
-				}
-			} 
+            if (customFieldsJSON != null)
+            {
+                _customFields = new Dictionary<string, string>();
+                IEnumerable<JProperty> keys = customFieldsJSON.Properties();
+                foreach (var item in keys)
+                {
+                    _customFields.Add(item.Name, (string)customFieldsJSON[item.Name]);
+                }
+            }
 
-			//fields that can't be updated by the user, only retrieve
-            _createdAt = trackingJSON["created_at"]== null?DateTime.MinValue:(DateTime)trackingJSON["created_at"];
-            _updatedAt = trackingJSON["updated_at"]==null?DateTime.MinValue:(DateTime)trackingJSON["updated_at"];
-			_expectedDelivery = trackingJSON["expected_delivery"]==null?null:(String)trackingJSON["expected_delivery"];
+            //fields that can't be updated by the user, only retrieve
+            _createdAt = trackingJSON["created_at"] == null ? DateTime.MinValue : (DateTime)trackingJSON["created_at"];
+            _updatedAt = trackingJSON["updated_at"] == null ? DateTime.MinValue : (DateTime)trackingJSON["updated_at"];
+            _expectedDelivery = trackingJSON["expected_delivery"] == null ? null : (string)trackingJSON["expected_delivery"];
 
-			_active = trackingJSON ["active"] == null? false : (bool) trackingJSON["active"];
+            _active = trackingJSON["active"] == null ? false : (bool)trackingJSON["active"];
 
-            origin_country_iso3 = (String)trackingJSON["origin_country_iso3"];
+            origin_country_iso3 = (string)trackingJSON["origin_country_iso3"];
 
-            if (origin_country_iso3 != null && origin_country_iso3 != String.Empty)
+            if (origin_country_iso3 != null && origin_country_iso3 != string.Empty)
             {
                 _originCountryISO3 = (ISO3Country)Enum.Parse(typeof(ISO3Country), origin_country_iso3);
             }
-			_shipmentPackageCount =  trackingJSON["shipment_package_count"]==null?0:
-				(int)trackingJSON["shipment_package_count"];
-			_shipmentType = trackingJSON["shipment_type"]==null?null:(String)trackingJSON["shipment_type"];
-			_signedBy = trackingJSON["singned_by"]==null?null:(String)trackingJSON["signed_by"];
-			_source = trackingJSON["source"]==null?null:(String)trackingJSON["source"];
-			_tag = (String)trackingJSON["tag"]==null?0:
-				(StatusTag)Enum.Parse(typeof(StatusTag), (String)trackingJSON["tag"]);
+            _shipmentPackageCount = trackingJSON["shipment_package_count"] == null ? 0 :
+                (int)trackingJSON["shipment_package_count"];
+            _shipmentType = trackingJSON["shipment_type"] == null ? null : (string)trackingJSON["shipment_type"];
+            _signedBy = trackingJSON["singned_by"] == null ? null : (string)trackingJSON["signed_by"];
+            _source = trackingJSON["source"] == null ? null : (string)trackingJSON["source"];
+            _tag = (string)trackingJSON["tag"] == null ? 0 :
+                (StatusTag)Enum.Parse(typeof(StatusTag), (string)trackingJSON["tag"]);
 
-			_trackedCount = trackingJSON["tracked_count"]==null?0:(int)trackingJSON["tracked_count"];
-			_uniqueToken = trackingJSON["unique_token"]==null?null:(String)trackingJSON["unique_token"];
+            _trackedCount = trackingJSON["tracked_count"] == null ? 0 : (int)trackingJSON["tracked_count"];
+            _uniqueToken = trackingJSON["unique_token"] == null ? null : (string)trackingJSON["unique_token"];
 
-			// checkpoints
-			JArray checkpointsArray =  trackingJSON["checkpoints"]==null?null:
-				(JArray)trackingJSON["checkpoints"];
-			if(checkpointsArray!=null && checkpointsArray.Count!=0){
-				_checkpoints = new List<Checkpoint>();
-				for (int i=0;i<checkpointsArray.Count;i++){
-					_checkpoints.Add(new Checkpoint((JObject)checkpointsArray[i]));
-				}
-			}
-		}
-            
+            // checkpoints
+            JArray checkpointsArray = trackingJSON["checkpoints"] == null ? null :
+                (JArray)trackingJSON["checkpoints"];
+            if (checkpointsArray != null && checkpointsArray.Count != 0)
+            {
+                _checkpoints = new List<Checkpoint>();
+                for (var i = 0; i < checkpointsArray.Count; i++)
+                {
+                    _checkpoints.Add(new Checkpoint((JObject)checkpointsArray[i]));
+                }
+            }
+        }
+        
+        public void AddEmails(string emails)
+        {
+            if (_emails == null)
+            {
+                _emails = new List<string>
+                {
+                    emails
+                };
+            }
+            else
+            {
+                _emails.Add(emails);
+            }
+        }
 
-		public String id{
-			get { return _id; }
-			set { _id = value; }
-		}
+        public void DeleteEmails(string email)
+        {
+            if (_emails != null)
+            {
+                _emails.Remove(email);
+            }
+        }
 
-		public String trackingNumber{
-			get { return _trackingNumber; }
-			set { _trackingNumber = value; }
-		}
+        public void AddSmses(string smses)
+        {
+            if (_smses == null)
+            {
+                _smses = new List<string>
+                {
+                    smses
+                };
+            }
+            else
+            {
+                _smses.Add(smses);
+            }
+        }
 
-		public String slug{
-			get { return _slug; }
-			set { _slug = value; }
-		}
+        public void DeleteSmses(string smses)
+        {
+            if (_smses != null)
+            {
+                _smses.Remove(smses);
+            }
+        }
+        
+        public void AddCustomFields(string field, string value)
+        {
 
-		public List<String> emails{
-			get { return _emails; }
-			set { _emails = value; }
-		}
+            if (_customFields == null)
+            {
+                _customFields = new Dictionary<string, string>();
+            }
+            CustomFields.Add(field, value);
+        }
 
-		public void addEmails(String emails) {
-			if (_emails == null) {
-				_emails = new List<String>();
-				_emails.Add(emails);
-			}  else {
-				_emails.Add(emails);
-			}
-		}
+        public void DeleteCustomFields(string field)
+        {
+            if (CustomFields != null)
+            {
+                CustomFields.Remove(field);
+            }
+        }
+        
+        public string GetJSONPost()
+        {
+            var globalJSON = new JObject();
+            var trackingJSON = new JObject
+            {
+                //	trackingJSON.Add("hola",
+                { "tracking_number", new JValue(_trackingNumber) }
+            };
+            if (_slug != null)
+            {
+                trackingJSON.Add("slug", new JValue(_slug));
+            }
 
-		public void deleteEmail(String email){
-			if (_emails != null) {
-				_emails.Remove (email);
-			}
-		}
-		public List<String> smses{
-			get { return _smses; }
-			set { _smses = value; }
-		}
+            if (_title != null)
+            {
+                trackingJSON.Add("title", new JValue(_title));
+            }
 
-		public void addSmses(String smses) {
-			if (_smses == null) {
-				_smses = new List<String>();
-				_smses.Add(smses);
-			}  else {
-				_smses.Add(smses);
-			}
-		}
-
-		public void deleteSmes(String smses){
-			if (_smses != null) {
-				_smses.Remove (smses);
-			}
-		}
-
-		public String title{
-			get { return _title; }
-			set { _title = value; }
-		}
-
-		public String customerName{
-			get { return _customerName; }
-			set { _customerName = value; }
-		}
-
-		public ISO3Country destinationCountryISO3{
-			get { return _destinationCountryISO3; }
-			set { _destinationCountryISO3 = value; }
-		}
-
-		public String orderID{
-			get { return _orderID; }
-			set { _orderID = value; }
-		}
-
-		public String orderIDPath{
-			get { return _orderIDPath; }
-			set { _orderIDPath = value; }
-		}			
-
-		public Dictionary<String,String> customFields{
-			get { return _customFields; }
-			set { _customFields = value; }
-		}
-
-		public void addCustomFields(String field, String value) {
-
-			if (_customFields == null) {
-				_customFields = new Dictionary<String, String>();
-			}
-			customFields.Add(field, value);
-		}
-
-		public void deleteCustomFields(String field) {
-			if (this.customFields != null) {
-				this.customFields.Remove(field);
-			}
-		}
-
-		public DateTime createdAt{
-			get { return _createdAt; }
-			set { _createdAt = value; }
-		}	
-
-		public DateTime updatedAt{
-			get { return _updatedAt; }
-			set { _updatedAt = value; }
-		}
-
-		public bool active{
-			get { return _active; }
-			set { _active = value; }
-		}
-
-		public String expectedDelivery{
-			get { return _expectedDelivery; }
-			set { _expectedDelivery = value; }
-		}	
-
-		public ISO3Country originCountryISO3{
-			get { return _originCountryISO3; }
-			set { _originCountryISO3 = value; }		
-		}
-
-		public int shipmentPackageCount{
-			get { return _shipmentPackageCount; }
-			set { _shipmentPackageCount = value; }		
-		}
-
-		public int trackedCount{
-			get { return _trackedCount; }
-			set { _trackedCount = value; }		
-		}
-
-		public String shipmentType{
-			get { return _shipmentType; }
-			set { _shipmentType = value; }		
-		}
-
-		public String signedBy{
-			get { return _signedBy; }
-			set { _signedBy = value; }		
-		}
-
-		public String source{
-			get { return _source; }
-			set { _source = value; }		
-		}
-
-		public StatusTag tag{
-			get { return _tag; }
-			set { _tag = value; }		
-		}
-
-		public String uniqueToken{
-			get { return _uniqueToken; }
-			set { _uniqueToken = value; }		
-		}
-
-		public String trackingAccountNumber{
-			get { return _trackingAccountNumber; }
-			set { _trackingAccountNumber = value; }		
-		}
-
-		public String trackingPostalCode{
-			get { return _trackingPostalCode; }
-			set { _trackingPostalCode = value; }		
-		}
-
-		public String trackingShipDate{
-			get { return _trackingShipDate; }
-			set { _trackingShipDate = value; }		
-		}
-
-		public List<Checkpoint> checkpoints{
-			get { return _checkpoints; }
-			set { _checkpoints = value; }		
-		}
-
-		public String getJSONPost(){
-			JObject globalJSON = new JObject();
-			JObject trackingJSON = new JObject();
-			//	trackingJSON.Add("hola",
-			trackingJSON.Add("tracking_number",new JValue(_trackingNumber));
-			if (_slug != null) trackingJSON.Add("slug",new JValue(_slug));
-			if (_title != null) trackingJSON.Add("title", new JValue(_title));
-			if (_emails != null) {
-				JArray emailsJSON = new JArray(_emails);
-				trackingJSON["emails"]= emailsJSON;
-			}
-			if (_smses != null) {
-				JArray smsesJSON = new JArray(_smses);
-				trackingJSON["smses"]= smsesJSON;
-			}
-			if (_customerName != null) trackingJSON.Add("customer_name",new JValue( _customerName));
-			if (_destinationCountryISO3 != 0)
-				trackingJSON.Add("destination_country_iso3",new JValue(_destinationCountryISO3.ToString()));
-			if (_orderID != null) trackingJSON.Add("order_id",new JValue(_orderID));
-			if (_orderIDPath != null) trackingJSON.Add("order_id_path",new JValue(_orderIDPath));
-
-			if (_trackingAccountNumber != null) trackingJSON.Add("tracking_account_number",new JValue( _trackingAccountNumber));
-			if (_trackingPostalCode != null) trackingJSON.Add("tracking_postal_code",new JValue(trackingPostalCode));
-			if (_trackingShipDate != null) trackingJSON.Add("tracking_ship_date",new JValue(trackingShipDate));
-
-			if (_customFields != null) {
-				JObject customFieldsJSON = new JObject();
-				foreach (KeyValuePair<String, String> pair in _customFields) {
-					customFieldsJSON.Add(pair.Key, new JValue(pair.Value));
-				}
-
-				trackingJSON["custom_fields"] = customFieldsJSON;
-			}
-
-
-			globalJSON["tracking"] = trackingJSON;
-
-			return globalJSON.ToString();
-		}
-
-
-        public String generatePutJSON(){
-            JObject globalJSON = new JObject();
-            JObject trackingJSON = new JObject();
-            JObject customFieldsJSON;
-
-            if (_title != null) trackingJSON.Add("title",new JValue(_title));
-            if (_emails != null) {
-                JArray emailsJSON = new JArray(_emails);
+            if (_emails != null)
+            {
+                var emailsJSON = new JArray(_emails);
                 trackingJSON["emails"] = emailsJSON;
             }
-            if (this.smses != null) {
-                JArray smsesJSON = new JArray(_smses);
-                trackingJSON["smses"]= smsesJSON;
+            if (_smses != null)
+            {
+                var smsesJSON = new JArray(_smses);
+                trackingJSON["smses"] = smsesJSON;
             }
-            if (_customerName != null) trackingJSON.Add("customer_name", new JValue(_customerName));
-            if (_orderID != null) trackingJSON.Add("order_id", new JValue(_orderID));
-            if (_orderIDPath != null) trackingJSON.Add("order_id_path", new JValue (_orderIDPath));
-            if (_customFields != null) {
+            if (_customerName != null)
+            {
+                trackingJSON.Add("customer_name", new JValue(_customerName));
+            }
+
+            if (_destinationCountryISO3 != 0)
+            {
+                trackingJSON.Add("destination_country_iso3", new JValue(_destinationCountryISO3.ToString()));
+            }
+
+            if (_orderID != null)
+            {
+                trackingJSON.Add("order_id", new JValue(_orderID));
+            }
+
+            if (_orderIDPath != null)
+            {
+                trackingJSON.Add("order_id_path", new JValue(_orderIDPath));
+            }
+
+            if (_trackingAccountNumber != null)
+            {
+                trackingJSON.Add("tracking_account_number", new JValue(_trackingAccountNumber));
+            }
+
+            if (_trackingPostalCode != null)
+            {
+                trackingJSON.Add("tracking_postal_code", new JValue(TrackingPostalCode));
+            }
+
+            if (_trackingShipDate != null)
+            {
+                trackingJSON.Add("tracking_ship_date", new JValue(TrackingShipDate));
+            }
+
+            if (_customFields != null)
+            {
+                var customFieldsJSON = new JObject();
+                foreach (KeyValuePair<string, string> pair in _customFields)
+                {
+                    customFieldsJSON.Add(pair.Key, new JValue(pair.Value));
+                }
+
+                trackingJSON["custom_fields"] = customFieldsJSON;
+            }
+            
+            globalJSON["tracking"] = trackingJSON;
+
+            return globalJSON.ToString();
+        }
+        
+        public string GeneratePutJSON()
+        {
+            var globalJSON = new JObject();
+            var trackingJSON = new JObject();
+            JObject customFieldsJSON;
+
+            if (_title != null)
+            {
+                trackingJSON.Add("title", new JValue(_title));
+            }
+
+            if (_emails != null)
+            {
+                var emailsJSON = new JArray(_emails);
+                trackingJSON["emails"] = emailsJSON;
+            }
+            if (Smses != null)
+            {
+                var smsesJSON = new JArray(_smses);
+                trackingJSON["smses"] = smsesJSON;
+            }
+            if (_customerName != null)
+            {
+                trackingJSON.Add("customer_name", new JValue(_customerName));
+            }
+
+            if (_orderID != null)
+            {
+                trackingJSON.Add("order_id", new JValue(_orderID));
+            }
+
+            if (_orderIDPath != null)
+            {
+                trackingJSON.Add("order_id_path", new JValue(_orderIDPath));
+            }
+
+            if (_customFields != null)
+            {
                 customFieldsJSON = new JObject();
 
-                foreach (KeyValuePair<String, String> pair in _customFields) {
+                foreach (KeyValuePair<string, string> pair in _customFields)
+                {
                     customFieldsJSON.Add(pair.Key, new JValue(pair.Value));
                 }
                 trackingJSON["custom_fields"] = customFieldsJSON;
@@ -448,36 +548,34 @@ namespace AftershipAPI
             return globalJSON.ToString();
         }
 
-		public String getQueryRequiredFields(){
-			bool containsInfo = false;
-			QueryString qs = new QueryString();
-			if (this.trackingAccountNumber!=null) {
-				containsInfo=true;
-				qs.add("tracking_account_number", this.trackingAccountNumber);
-			}
-			if (this.trackingPostalCode!=null){
-				qs.add("tracking_postal_code", this.trackingPostalCode);
-				containsInfo=true;
-			}
-			if (this.trackingShipDate!=null){
-				qs.add("tracking_ship_date", this.trackingShipDate);
-				containsInfo=true;
-			}
-			if(containsInfo){
-				return  qs.ToString();
-			}
-			return "";
-
-		}
-
-        public override string ToString(){
-
-            return "_id: " + _id + "\n_trackingNumber: " + _trackingNumber + "\n_slug:" + _slug;
-            
+        public string GetQueryRequiredFields()
+        {
+            var containsInfo = false;
+            var qs = new QueryString();
+            if (TrackingAccountNumber != null)
+            {
+                containsInfo = true;
+                qs.Add("tracking_account_number", TrackingAccountNumber);
+            }
+            if (TrackingPostalCode != null)
+            {
+                qs.Add("tracking_postal_code", TrackingPostalCode);
+                containsInfo = true;
+            }
+            if (TrackingShipDate != null)
+            {
+                qs.Add("tracking_ship_date", TrackingShipDate);
+                containsInfo = true;
+            }
+            if (containsInfo)
+            {
+                return qs.ToString();
+            }
+            return "";
         }
-	}
 
-
+        public override string ToString() => "_id: " + _id + "\n_trackingNumber: " + _trackingNumber + "\n_slug:" + _slug;
+    }
 }
 
 

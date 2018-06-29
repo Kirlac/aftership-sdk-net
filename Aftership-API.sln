@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AftershipAPI", "Aftership-API\AftershipAPI.csproj", "{6455C2A9-B5E3-4095-8942-F51590041249}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aftership.FullFramework.Api", "Aftership-API\Aftership.FullFramework.Api.csproj", "{6455C2A9-B5E3-4095-8942-F51590041249}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnitTests", "XUnitTests\XUnitTests.csproj", "{0D43CC94-F021-411F-9CF5-E781640E2132}"
 EndProject

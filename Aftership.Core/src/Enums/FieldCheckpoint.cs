@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AftershipAPI.Enums
+﻿namespace AftershipAPI.Enums
 {
     public enum FieldCheckpoint
     {
