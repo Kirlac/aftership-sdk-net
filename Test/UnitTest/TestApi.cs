@@ -1,13 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using AftershipAPI;
+﻿using AftershipAPI;
 using AftershipAPI.Enums;
 using System;
 using System.Collections.Generic;
+using Xunit;
 
 namespace Test
 {
-    [TestClass]
-    public class TestConnectionAPI
+        public class TestConnectionAPI
     {
 
         ConnectionAPI connection; 
@@ -116,20 +115,20 @@ namespace Test
 
         }
 
-        [TestMethod]
+        [Fact]
         public void testDetectCouriers()
         {
 
             //get trackings of this number.
             List<Courier> couriers = connection.detectCouriers(trackingNumberToDetect);
-            Assert.AreEqual(3, couriers.Count);
+            Assert.Equal(3, couriers.Count);
             //the couriers should be dpd or fedex
             Console.WriteLine("**0" + couriers[0].slug);
             Console.WriteLine("**1" + couriers[1].slug);
 
-            Assert.IsTrue(Equals(couriers[0].slug, couriersDetected[0])
+            Assert.True(Equals(couriers[0].slug, couriersDetected[0])
                 || Equals(couriers[1].slug, couriersDetected[0]));
-            Assert.IsTrue(Equals(couriers[0].slug, couriersDetected[1])
+            Assert.True(Equals(couriers[0].slug, couriersDetected[1])
                 || Equals(couriersDetected[1], couriers[1].slug));
 
             //if the trackingNumber doesn't match any courier defined, should give an error.
@@ -137,11 +136,11 @@ namespace Test
             try
             {
                 List<Courier> couriers1 = connection.detectCouriers(trackingNumberToDetectError);
-                Assert.AreEqual(0, couriers1.Count);
+                Assert.Equal(0, couriers1.Count);
             }
             catch (Exception e)
             {
-                Assert.AreEqual("{\"meta\":{\"code\":4005,\"message\":\"The value of `tracking_number` is invalid.\",\"type\":\"BadRequest\"},\"data\":{\"tracking\":{\"tracking_number\":\"asdq\"}}}", e.Message);
+                Assert.Equal("{\"meta\":{\"code\":4005,\"message\":\"The value of `tracking_number` is invalid.\",\"type\":\"BadRequest\"},\"data\":{\"tracking\":{\"tracking_number\":\"asdq\"}}}", e.Message);
             }
 
             List<String> slugs = new List<String>();
@@ -151,9 +150,9 @@ namespace Test
             //   slugs.add("asdfasdfasdfasd");
             slugs.Add("dpd");
             List<Courier> couriers2 = connection.detectCouriers(trackingNumberToDetect, "28046", "", null, slugs);
-            Assert.AreEqual(1, couriers2.Count);
+            Assert.Equal(1, couriers2.Count);
         }
-        [TestMethod]
+        [Fact]
         public void TestCreateTracking()
         {
             Tracking tracking1 = new Tracking(trackingNumberPost);
@@ -171,41 +170,41 @@ namespace Test
             tracking1.addSmses(sms2Post);
             Tracking trackingPosted = connection.createTracking(tracking1);
 
-            Assert.AreEqual(trackingNumberPost, trackingPosted.trackingNumber, "#A01");
-            Assert.AreEqual(slugPost, trackingPosted.slug, "#A02");
-            Assert.AreEqual(orderIDPathPost, trackingPosted.orderIDPath, "#A03");
-            Assert.AreEqual(orderIDPost, trackingPosted.orderID, "#A04");
-            Assert.AreEqual(countryDestinationPost,
+            Assert.Equal(trackingNumberPost, trackingPosted.trackingNumber, "#A01");
+            Assert.Equal(slugPost, trackingPosted.slug, "#A02");
+            Assert.Equal(orderIDPathPost, trackingPosted.orderIDPath, "#A03");
+            Assert.Equal(orderIDPost, trackingPosted.orderID, "#A04");
+            Assert.Equal(countryDestinationPost,
                 trackingPosted.destinationCountryISO3, "#A05");
 
-            Assert.IsTrue(trackingPosted.emails.Contains(email1Post), "#A06");
-            Assert.IsTrue(trackingPosted.emails.Contains(email2Post), "#A07");
-            Assert.AreEqual(2, trackingPosted.emails.Count, "#A08");
+            Assert.True(trackingPosted.emails.Contains(email1Post), "#A06");
+            Assert.True(trackingPosted.emails.Contains(email2Post), "#A07");
+            Assert.Equal(2, trackingPosted.emails.Count, "#A08");
 
-            Assert.IsTrue(trackingPosted.smses.Contains(sms1Post), "#A09");
-            Assert.IsTrue(trackingPosted.smses.Contains(sms2Post), "#A10");
-            Assert.AreEqual(2, trackingPosted.smses.Count, "#A11");
+            Assert.True(trackingPosted.smses.Contains(sms1Post), "#A09");
+            Assert.True(trackingPosted.smses.Contains(sms2Post), "#A10");
+            Assert.Equal(2, trackingPosted.smses.Count, "#A11");
 
-            Assert.AreEqual(customProductNamePost,
+            Assert.Equal(customProductNamePost,
                 trackingPosted.customFields["product_name"], "#A12");
-            Assert.AreEqual(customProductPricePost,
+            Assert.Equal(customProductPricePost,
                 trackingPosted.customFields["product_price"], "#A13");
         }
 
-        [TestMethod]
+        [Fact]
         public void TestCreateTrackingEmptySlug()
         {
             //test post only informing trackingNumber (the slug can be dpd and fedex)
             Tracking tracking2 = new Tracking(trackingNumberToDetect);
             Tracking trackingPosted2 = connection.createTracking(tracking2);
-            Assert.AreEqual(trackingNumberToDetect, trackingPosted2.trackingNumber, "#A14");
-            Assert.AreEqual("dpd", trackingPosted2.slug, "#A15");//the system assign dpd (it exist)
+            Assert.Equal(trackingNumberToDetect, trackingPosted2.trackingNumber, "#A14");
+            Assert.Equal("dpd", trackingPosted2.slug, "#A15");//the system assign dpd (it exist)
 
 
         }
 
         //test post tracking number doesn't exist
-        [TestMethod]
+        [Fact]
         public void TestCreateTrackingError()
         {
             Tracking tracking3 = new Tracking(trackingNumberToDetectError);
@@ -214,48 +213,48 @@ namespace Test
             {
                 connection.createTracking(tracking3);
                 //always should give an exception before this
-                Assert.IsTrue(false, "#A16");
+                Assert.True(false, "#A16");
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                Assert.AreEqual("{\"meta\":{\"code\":4005,\"message\":\"The value of `tracking_number` is invalid.\",\"type\":\"BadRequest\"},\"data\":{\"tracking\":{\"tracking_number\":\"asdq\",\"title\":\"asdq\"}}}",
+                Assert.Equal("{\"meta\":{\"code\":4005,\"message\":\"The value of `tracking_number` is invalid.\",\"type\":\"BadRequest\"},\"data\":{\"tracking\":{\"tracking_number\":\"asdq\",\"title\":\"asdq\"}}}",
                     e.Message, "#A17");
             }
         }
 
 
-        [TestMethod]
+        [Fact]
         public void testDeleteTracking()
         {
 
             //delete a tracking number (posted in the setup)
             Tracking deleteTracking = new Tracking(trackingNumberDelete);
             deleteTracking.slug = slugDelete;
-            Assert.IsTrue(connection.deleteTracking(deleteTracking), "#A18");
+            Assert.True(connection.deleteTracking(deleteTracking), "#A18");
 
         }
 
-        [TestMethod]
+        [Fact]
         public void testDeleteTracking1()
         {
             //if the slug is bad informed
             try
             {
                 Tracking deleteTracking2 = new Tracking(trackingNumberDelete2);
-                Assert.IsTrue(connection.deleteTracking(deleteTracking2), "#A19");
+                Assert.True(connection.deleteTracking(deleteTracking2), "#A19");
                 //always should give an exception before this
-                Assert.IsTrue(false);
+                Assert.True(false);
             }
             catch (Exception e)
             {
-                Assert.AreEqual("{\"meta\":{\"code\":404,\"message\":\"The URI requested is invalid or the resource requested does not exist.\",\"type\":\"NotFound\"},\"data\":{\"resource\":\"/v4/trackings//798865638020\"}}",
+                Assert.Equal("{\"meta\":{\"code\":404,\"message\":\"The URI requested is invalid or the resource requested does not exist.\",\"type\":\"NotFound\"},\"data\":{\"resource\":\"/v4/trackings//798865638020\"}}",
                     e.Message, "#A20");
             }
 
         }
 
-        [TestMethod]
+        [Fact]
         public void testDeleteTracking2()
         {
 
@@ -264,18 +263,18 @@ namespace Test
             {
                 Tracking deleteTracking3 = new Tracking("adfa");
                 deleteTracking3.slug = "fedex";
-                Assert.IsTrue(connection.deleteTracking(deleteTracking3), "#A20");
+                Assert.True(connection.deleteTracking(deleteTracking3), "#A20");
                 //always should give an exception before this
-                Assert.IsTrue(false, "#A21");
+                Assert.True(false, "#A21");
             }
             catch (Exception e)
             {
-                Assert.AreEqual("{\"meta\":{\"code\":4005,\"message\":\"The value of `tracking_number` is invalid.\",\"type\":\"BadRequest\"},\"data\":{}}",
+                Assert.Equal("{\"meta\":{\"code\":4005,\"message\":\"The value of `tracking_number` is invalid.\",\"type\":\"BadRequest\"},\"data\":{}}",
                     e.Message, "#A22");
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void testGetTrackingByNumber()
         {
             String trackingNumber = "3799517046";
@@ -285,21 +284,21 @@ namespace Test
             trackingGet1.slug = slug;
 
             Tracking tracking = connection.getTrackingByNumber(trackingGet1);
-            Assert.AreEqual(trackingNumber, tracking.trackingNumber, "#A23");
-            Assert.AreEqual(slug, tracking.slug, "#A24");
-            Assert.AreEqual(null, tracking.shipmentType, "#A25");
+            Assert.Equal(trackingNumber, tracking.trackingNumber, "#A23");
+            Assert.Equal(slug, tracking.slug, "#A24");
+            Assert.Equal(null, tracking.shipmentType, "#A25");
 
             List<Checkpoint> checkpoints = tracking.checkpoints;
             Checkpoint lastCheckpoint = checkpoints[checkpoints.Count - 1];
-            Assert.IsTrue(checkpoints != null, "A25-1");
-            Assert.IsTrue(checkpoints.Count > 1, "A25-2");
+            Assert.NotNull(checkpoints);
+            Assert.True(checkpoints.Count > 1, "A25-2");
 
-            Assert.IsTrue(!string.IsNullOrEmpty(lastCheckpoint.message));
-            Assert.IsTrue(!string.IsNullOrEmpty(lastCheckpoint.countryName));
+            Assert.False(string.IsNullOrEmpty(lastCheckpoint.message));
+            Assert.False(string.IsNullOrEmpty(lastCheckpoint.countryName));
 
         }
 
-        [TestMethod]
+        [Fact]
         public void testGetTrackingByNumber2()
         {
 
@@ -310,17 +309,17 @@ namespace Test
 
                 connection.getTrackingByNumber(trackingGet2);
                 //always should give an exception before this
-                Assert.IsTrue(false, "#A26");
+                Assert.True(false, "#A26");
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                Assert.AreEqual("{\"meta\":{\"code\":404,\"message\":\"The URI requested is invalid or the resource requested does not exist.\",\"type\":\"NotFound\"},\"data\":{\"resource\":\"/v4/trackings//RC328021065CN\"}}",
+                Assert.Equal("{\"meta\":{\"code\":404,\"message\":\"The URI requested is invalid or the resource requested does not exist.\",\"type\":\"NotFound\"},\"data\":{\"resource\":\"/v4/trackings//RC328021065CN\"}}",
                     e.Message, "#A27");
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void testGetTrackingByNumber3()
         {
 
@@ -331,28 +330,28 @@ namespace Test
                 trackingGet3.slug = "fedex";
                 connection.getTrackingByNumber(trackingGet3);
                 //always should give an exception before this
-                Assert.IsTrue(false, "#A28");
+                Assert.True(false, "#A28");
             }
             catch (Exception e)
             {
                 Console.Write(e.Message);
-                Assert.AreEqual("{\"meta\":{\"code\":4005,\"message\":\"The value of `tracking_number` is invalid.\",\"type\":\"BadRequest\"},\"data\":{}}",
+                Assert.Equal("{\"meta\":{\"code\":4005,\"message\":\"The value of `tracking_number` is invalid.\",\"type\":\"BadRequest\"},\"data\":{}}",
                     e.Message, "#A29");
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void testGetLastCheckpointID()
         {
             Tracking trackingGet1 = new Tracking("whatever");
             trackingGet1.id = "5550529d74346ecd5099ab47";
             Checkpoint newCheckpoint = connection.getLastCheckpoint(trackingGet1);
-            Assert.IsTrue(!string.IsNullOrEmpty(newCheckpoint.message));
-            Assert.AreEqual(null, newCheckpoint.countryName);
-            Assert.AreEqual("Delivered", newCheckpoint.tag);
+            Assert.False(string.IsNullOrEmpty(newCheckpoint.message));
+            Assert.Equal(null, newCheckpoint.countryName);
+            Assert.Equal("Delivered", newCheckpoint.tag);
         }
 
-        [TestMethod]
+        [Fact]
         public void testGetLastCheckpoint2ID()
         {
             List<FieldCheckpoint> fields = new List<FieldCheckpoint>();
@@ -361,18 +360,18 @@ namespace Test
             trackingGet1.id = "555035fe74346ecd50998680";
 
             Checkpoint newCheckpoint1 = connection.getLastCheckpoint(trackingGet1, fields, "");
-            Assert.IsTrue(!string.IsNullOrEmpty(newCheckpoint1.message));
-            Assert.AreEqual("0001-01-01T00:00:00+08:00", DateMethods.ToString(newCheckpoint1.createdAt));
+            Assert.False(string.IsNullOrEmpty(newCheckpoint1.message));
+            Assert.Equal("0001-01-01T00:00:00+08:00", DateMethods.ToString(newCheckpoint1.createdAt));
 
             fields.Add(FieldCheckpoint.created_at);
             Checkpoint newCheckpoint2 = connection.getLastCheckpoint(trackingGet1, fields, "");
-            Assert.IsTrue(!string.IsNullOrEmpty(newCheckpoint2.message));
-            Assert.AreNotEqual("0001-01-01T00:00:00+00:00", DateMethods.ToString(newCheckpoint2.createdAt));
-            Assert.IsTrue(!string.IsNullOrEmpty(DateMethods.ToString(newCheckpoint2.createdAt)));
+            Assert.False(string.IsNullOrEmpty(newCheckpoint2.message));
+            Assert.NotEqual("0001-01-01T00:00:00+00:00", DateMethods.ToString(newCheckpoint2.createdAt));
+            Assert.False(string.IsNullOrEmpty(DateMethods.ToString(newCheckpoint2.createdAt)));
 
         }
 
-        [TestMethod]
+        [Fact]
         public void testGetLastCheckpoint3ID()
         {
             List<FieldCheckpoint> fields = new List<FieldCheckpoint>();
@@ -382,11 +381,11 @@ namespace Test
 
 
             Checkpoint newCheckpoint1 = connection.getLastCheckpoint(trackingGet1, fields, "");
-            Assert.IsTrue(!string.IsNullOrEmpty(newCheckpoint1.message));
+            Assert.False(string.IsNullOrEmpty(newCheckpoint1.message));
 
         }
 
-        [TestMethod]
+        [Fact]
         public void testGetTrackings()
         {
 
@@ -395,11 +394,11 @@ namespace Test
             List<Tracking> listTrackings100 = connection.getTrackings(1);
             // Assert.AreEqual(10, listTrackings100.Count);
             //at least we have 10 elements
-            Assert.IsNotNull(listTrackings100[0].ToString());
-            Assert.IsNotNull(listTrackings100[10].ToString());
+            Assert.NotNull(listTrackings100[0].ToString());
+            Assert.NotNull(listTrackings100[10].ToString());
         }
 
-        [TestMethod]
+        [Fact]
         public void testPutTracking()
         {
             Tracking tracking = new Tracking("00340433836621378669");
@@ -407,7 +406,7 @@ namespace Test
             tracking.title = "another title";
 
             Tracking tracking2 = connection.putTracking(tracking);
-            Assert.AreEqual("another title", tracking2.title);
+            Assert.Equal("another title", tracking2.title);
 
             //test post tracking number doesn't exist
             Tracking tracking3 = new Tracking(trackingNumberToDetectError);
@@ -417,29 +416,29 @@ namespace Test
             {
                 connection.putTracking(tracking3);
                 //always should give an exception before this
-                Assert.AreEqual("This never should be executed", false);
+                Assert.Equal("This never should be executed", false);
             }
             catch (Exception e)
             {
-                Assert.AreEqual("{\"meta\":{\"code\":404,\"message\":\"The URI requested is invalid or the resource requested does not exist.\",\"type\":\"NotFound\"},\"data\":{\"resource\":\"/v4/trackings//asdq\"}}", e.Message);
+                Assert.Equal("{\"meta\":{\"code\":404,\"message\":\"The URI requested is invalid or the resource requested does not exist.\",\"type\":\"NotFound\"},\"data\":{\"resource\":\"/v4/trackings//asdq\"}}", e.Message);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void testGetAllCouriers()
         {
 
             List<Courier> couriers = connection.getAllCouriers();
 
             //check first courier
-            Assert.IsTrue(!string.IsNullOrEmpty(couriers[0].slug));
-            Assert.IsTrue(!string.IsNullOrEmpty(couriers[0].name));
-            Assert.IsTrue(!string.IsNullOrEmpty(couriers[0].phone));
-            Assert.IsTrue(!string.IsNullOrEmpty(couriers[0].other_name));
-            Assert.IsTrue(!string.IsNullOrEmpty(couriers[0].web_url));
+            Assert.False(string.IsNullOrEmpty(couriers[0].slug));
+            Assert.False(string.IsNullOrEmpty(couriers[0].name));
+            Assert.False(string.IsNullOrEmpty(couriers[0].phone));
+            Assert.False(string.IsNullOrEmpty(couriers[0].other_name));
+            Assert.False(string.IsNullOrEmpty(couriers[0].web_url));
 
             //total Couriers returned
-            Assert.IsTrue(couriers.Count > 200);
+            Assert.True(couriers.Count > 200);
             //try to acces with a bad API Key
             ConnectionAPI connectionBadKey = new ConnectionAPI("badKey");
 
@@ -449,24 +448,24 @@ namespace Test
             }
             catch (Exception e)
             {
-                Assert.AreEqual("{\"meta\":{\"code\":401,\"message\":\"Invalid API key.\",\"type\":\"Unauthorized\"},\"data\":{}}", e.Message);
+                Assert.Equal("{\"meta\":{\"code\":401,\"message\":\"Invalid API key.\",\"type\":\"Unauthorized\"},\"data\":{}}", e.Message);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void testGetCouriers()
         {
 
             List<Courier> couriers = connection.getCouriers();
             //total Couriers returned
-            Assert.IsTrue(couriers.Count > 30);
+            Assert.True(couriers.Count > 30);
             //check first courier
 
-            Assert.IsTrue(!string.IsNullOrEmpty(couriers[0].slug));
-            Assert.IsTrue(!string.IsNullOrEmpty(couriers[0].name));
-            Assert.IsTrue(!string.IsNullOrEmpty(couriers[0].phone));
-            Assert.IsTrue(!string.IsNullOrEmpty(couriers[0].other_name));
-            Assert.IsTrue(!string.IsNullOrEmpty(couriers[0].web_url));
+            Assert.False(string.IsNullOrEmpty(couriers[0].slug));
+            Assert.False(string.IsNullOrEmpty(couriers[0].name));
+            Assert.False(string.IsNullOrEmpty(couriers[0].phone));
+            Assert.False(string.IsNullOrEmpty(couriers[0].other_name));
+            Assert.False(string.IsNullOrEmpty(couriers[0].web_url));
 
             //try to acces with a bad API Key
             ConnectionAPI connectionBadKey = new ConnectionAPI("badKey");
@@ -477,12 +476,12 @@ namespace Test
             }
             catch (Exception e)
             {
-                Assert.AreEqual("{\"meta\":{\"code\":401,\"message\":\"Invalid API key.\",\"type\":\"Unauthorized\"},\"data\":{}}", e.Message);
+                Assert.Equal("{\"meta\":{\"code\":401,\"message\":\"Invalid API key.\",\"type\":\"Unauthorized\"},\"data\":{}}", e.Message);
             }
 
         }
 
-        [TestMethod]
+        [Fact]
         public void testGetTrackings_A()
         {
 
@@ -495,10 +494,10 @@ namespace Test
             parameters.limit = 50;
 
             List<Tracking> totalDHL = connection.getTrackings(parameters);
-            Assert.IsTrue(totalDHL.Count >= 1);
+            Assert.True(totalDHL.Count >= 1);
         }
 
-        [TestMethod]
+        [Fact]
         public void testGetTrackings_B()
         {
 
@@ -506,10 +505,10 @@ namespace Test
             param1.addDestination(ISO3Country.DEU);
             param1.limit = 20;
             List<Tracking> totalSpain = connection.getTrackings(param1);
-            Assert.IsTrue(totalSpain.Count >=1);
+            Assert.True(totalSpain.Count >=1);
         }
 
-        [TestMethod]
+        [Fact]
         public void testGetTrackings_C()
         {
             ParametersTracking param2 = new ParametersTracking();
@@ -517,22 +516,22 @@ namespace Test
             param2.limit = 50;
 
             List<Tracking> totalOutDelivery = connection.getTrackings(param2);
-            Assert.IsTrue(totalOutDelivery.Count > 10);
-            Assert.IsTrue(totalOutDelivery.Count <= 50);
+            Assert.True(totalOutDelivery.Count > 10);
+            Assert.True(totalOutDelivery.Count <= 50);
 
         }
 
-        [TestMethod]
+        [Fact]
         public void testGetTrackings_D()
         {
             ParametersTracking param3 = new ParametersTracking();
             param3.limit = 50;
             List<Tracking> totalOutDelivery1 = connection.getTrackings(param3);
-            Assert.IsTrue(totalOutDelivery1.Count > 10);
-            Assert.IsTrue(totalOutDelivery1.Count <= 50);
+            Assert.True(totalOutDelivery1.Count > 10);
+            Assert.True(totalOutDelivery1.Count <= 50);
         }
 
-        [TestMethod]
+        [Fact]
         public void testGetTrackings_E()
         {
 
@@ -543,10 +542,10 @@ namespace Test
 
             List<Tracking> totalOutDelivery2 = connection.getTrackings(param4);
             //  Assert.AreEqual( 2, totalOutDelivery2.Count);
-            Assert.AreEqual("this title", totalOutDelivery2[0].title);
+            Assert.Equal("this title", totalOutDelivery2[0].title);
         }
 
-        [TestMethod]
+        [Fact]
         public void testGetTrackings_F()
         {
 
@@ -555,9 +554,9 @@ namespace Test
             //param5.setLimit(50);
 
             List<Tracking> totalOutDelivery3 = connection.getTrackings(param5);
-            Assert.AreEqual(null, totalOutDelivery3[0].title);
+            Assert.Equal(null, totalOutDelivery3[0].title);
         }
-        [TestMethod]
+        [Fact]
         public void testGetTrackings_G()
         {
 
@@ -571,9 +570,9 @@ namespace Test
             //param6.setLimit(50);
 
             List<Tracking> totalOutDelivery4 = connection.getTrackings(param6);
-            Assert.AreEqual(null, totalOutDelivery4[0].slug);
+            Assert.Equal(null, totalOutDelivery4[0].slug);
         }
-        [TestMethod]
+        [Fact]
         public void testGetTrackings_H()
         {
 
@@ -582,10 +581,10 @@ namespace Test
             // param7.setLimit(50);
 
             List<Tracking> totalOutDelivery5 = connection.getTrackings(param7);
-            Assert.AreEqual(1, totalOutDelivery5.Count);
+            Assert.Equal(1, totalOutDelivery5.Count);
         }
 
-        [TestMethod]
+        [Fact]
         public void testRetrack()
         {
 
@@ -594,14 +593,14 @@ namespace Test
             try
             {
                 connection.retrack(tracking);
-                Assert.IsTrue(false);
+                Assert.True(false);
 
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                Assert.IsTrue(e.Message.Contains("4016"));
-                Assert.IsTrue(e.Message.Contains("Retrack is not allowed. You can only retrack each shipment once."));
+                Assert.True(e.Message.Contains("4016"));
+                Assert.True(e.Message.Contains("Retrack is not allowed. You can only retrack each shipment once."));
 
             }
         }
