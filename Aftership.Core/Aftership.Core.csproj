@@ -11,15 +11,17 @@
     <PackageIconUrl>https://www.aftership.com/assets/common/img/logo-aftership-premium-bright.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/AfterShip/aftership-sdk-net</RepositoryUrl>
     <PackageTags>Aftership Track Tracking Courier Couriers</PackageTags>
-    <Version>1.0.0-beta.2</Version>
+    <Version>1.0.0-beta.3</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\netstandard2.0\Aftership.Core.xml</DocumentationFile>
+    <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard2.0\Aftership.Core.xml</DocumentationFile>
+    <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
